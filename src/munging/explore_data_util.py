@@ -109,9 +109,7 @@ def get_power_feature_names(df):
     power_features = []
     power_feature_keys = ["_square", "_cube", "_fourth", "_cp", "_cnp"]
     for name in df.columns:
-        for key in power_feature_keys:
-            if key in name:
-                power_features.append(name)
+        power_features.extend(name for key in power_feature_keys if key in name)
     return power_features
 
 

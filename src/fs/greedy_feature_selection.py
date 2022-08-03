@@ -73,10 +73,8 @@ class GreedyFeatureSelection:
         y_oof = np.zeros(shape=(len(train_X)))
 
         features = list(train_X.columns)
-        fold = 0
         # n_folds = kf.get_n_splits()
         for train_index, validation_index in kf.split(X=train_X, y=train_Y):
-            fold += 1
             # logger.info(f"fold {fold} of {n_folds}")
             X_train, X_validation, y_train, y_validation = self.__get_X_Y_from_CV(
                 train_X, train_Y, train_index, validation_index
@@ -103,8 +101,7 @@ class GreedyFeatureSelection:
                 X_validation, num_iteration=model.best_iteration
             )
 
-        oof_score = round(self.__calculate_perf_metric(train_Y, y_oof), 5)
-        return oof_score
+        return round(self.__calculate_perf_metric(train_Y, y_oof), 5)
 
     def _feature_selection(self, X, y):
         good_features = [

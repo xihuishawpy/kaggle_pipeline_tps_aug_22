@@ -452,11 +452,9 @@ def xgb_train_validate_on_holdout(
             dtrain = xgb.DMatrix(
                 data=train_X, label=np.log1p(train_Y), feature_names=predictors
             )
-            dtest = xgb.DMatrix(data=test_X, feature_names=predictors)
         else:
             dtrain = xgb.DMatrix(data=train_X, label=train_Y, feature_names=predictors)
-            dtest = xgb.DMatrix(data=test_X, feature_names=predictors)
-
+        dtest = xgb.DMatrix(data=test_X, feature_names=predictors)
         bst = xgb.train(
             dtrain=dtrain,
             num_boost_round=best_iteration,
@@ -832,10 +830,8 @@ def xgb_train_validate_on_cv(
     feature_importance = pd.DataFrame()
     best_iterations = []
 
-    fold = 0
     n_folds = kf.get_n_splits()
-    for train_index, validation_index in kf.split(train_X[features], y=train_Y):
-        fold += 1
+    for fold, (train_index, validation_index) in enumerate(kf.split(train_X[features], y=train_Y), start=1):
         logger.info(f"fold {fold} of {n_folds}")
 
         X_train, X_validation, y_train, y_validation = _get_X_Y_from_CV(
@@ -929,9 +925,9 @@ def xgb_train_validate_on_cv(
             fold,
         )
 
-        # util.update_tracking(
-        #     run_id, "metric_fold_{}".format(fold), cv_oof_score, is_integer=False
-        # )
+            # util.update_tracking(
+            #     run_id, "metric_fold_{}".format(fold), cv_oof_score, is_integer=False
+            # )
 
     result_dict = _evaluate_and_log(
         logger,

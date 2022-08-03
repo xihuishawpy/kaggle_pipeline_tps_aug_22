@@ -19,7 +19,4 @@ def apply_variance_threshold(logger, df, threshold=0.1):
     )
     selector = VarianceThreshold(threshold=threshold)
     selector.fit(df)
-    # Return the DF with selected features
-    # https://stackoverflow.com/a/41041230/406896
-    df_sel = df.loc[:, selector.get_support()]
-    return df_sel
+    return df.loc[:, selector.get_support()]

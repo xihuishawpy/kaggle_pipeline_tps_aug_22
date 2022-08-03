@@ -109,5 +109,4 @@ class OptimizeAUC:
     def predict(self, X):
         # this is similar to _auc function
         x_coef = X * self.coef_
-        predictions = np.sum(x_coef, axis=1)
-        return predictions
+        return np.sum(x_coef, axis=1)

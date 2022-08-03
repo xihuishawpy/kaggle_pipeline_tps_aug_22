@@ -404,10 +404,11 @@ def get_group_stat(
         target_df = get_group_stat(
             logger, train_df, target_df, 'cat0', 'cont0', ['mean', 'max', 'min'])
     """
-    col_name_dict = {}
-    # dict for resultant column names
-    for name in agg_func_list:
-        col_name_dict[name] = f"{cat_feat_name}_{cont_feat_name}_{name}"
+    col_name_dict = {
+        name: f"{cat_feat_name}_{cont_feat_name}_{name}"
+        for name in agg_func_list
+    }
+
     temp = (
         source_df.groupby(cat_feat_name)[cont_feat_name]
         .agg(agg_func_list)
