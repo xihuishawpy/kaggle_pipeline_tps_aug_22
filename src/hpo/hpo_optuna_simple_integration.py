@@ -46,7 +46,7 @@ def get_data(frac=None):
     combined_df = combined_df.loc[:, orginal_features + feature_names]
     logger.info(f"Shape of the data after selecting features {combined_df.shape}")
 
-    train_X = combined_df.iloc[0: len(train_df)]
+    train_X = combined_df.iloc[:len(train_df)]
     train_Y = train_df[TARGET]
 
     logger.debug(f"Shape of train_X: {train_X.shape}, train_Y: {train_Y.shape}")
@@ -81,11 +81,9 @@ def objective(trial):
 
     skf = StratifiedKFold(n_splits=10, shuffle=False)
     n_folds = skf.get_n_splits()
-    fold = 0
     y_oof = np.zeros(len(train_X))
     cv_scores = []
-    for train_index, validation_index in skf.split(X=train_X, y=train_Y):
-        fold += 1
+    for fold, (train_index, validation_index) in enumerate(skf.split(X=train_X, y=train_Y), start=1):
         logger.info(f"fold {fold} of {n_folds}")
 
         X_train, X_validation, y_train, y_validation = train_util.__get_X_Y_from_CV(
